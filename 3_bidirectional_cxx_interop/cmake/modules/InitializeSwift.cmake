@@ -5,6 +5,22 @@
 #
 # See https://swift.org/LICENSE.txt for license information
 
+# Compute the name of the architecture directory on Windows from the CMake
+# system processor name.
+function(_swift_windows_arch_name output_variable_name target_arch)
+  if(NOT WIN32)
+    return()
+  endif()
+
+  if("${target_arch}" STREQUAL "AMD64")
+    set("${output_variable_name}" "x86_64" PARENT_SCOPE)
+  elseif("${target_arch}" STREQUAL "ARM64")
+    set("${output_variable_name}" "aarch64" PARENT_SCOPE)
+  else()
+    message(FATAL_ERROR "Unknown windows architecture: ${target_arch}")
+  endif()
+endfunction()
+
 # Compute flags and search paths
 # NOTE: This logic will eventually move to CMake
 function(_setup_swift_paths)
@@ -55,7 +71,11 @@ function(_setup_swift_paths)
 
   link_directories(${SWIFT_LIBRARY_SEARCH_PATHS})
 
-  if(NOT APPLE)
+  if(WIN32)
+    _swift_windows_arch_name(SWIFT_WIN_ARCH_DIR "${CMAKE_SYSTEM_PROCESSOR}")
+    set(SWIFT_SWIFTRT_FILE "$ENV{SDKROOT}/usr/lib/swift/windows/${SWIFT_WIN_ARCH_DIR}/swiftrt.obj")
+    add_link_options("$<$<LINK_LANGUAGE:Swift>:${SWIFT_SWIFTRT_FILE}>")
+  elseif(NOT APPLE)
     find_file(SWIFT_SWIFTRT_FILE
               swiftrt.o
               PATHS ${SWIFT_LIBRARY_SEARCH_PATHS}
