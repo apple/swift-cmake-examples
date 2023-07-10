@@ -16,6 +16,12 @@ if("${CMAKE_Swift_COMPILER_VERSION}" VERSION_LESS 5.9)
   message(FATAL_ERROR "Bidirectional C++ Interop requires Swift 5.9 or greater. Have ${CMAKE_Swift_COMPILER_VERSION}")
 endif()
 
+if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND
+   NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+  message(FATAL_ERROR "Project requires building with Clang.
+  Have ${CMAKE_CXX_COMPILER_ID}")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 # Set up swiftrt.o and runtime library search paths

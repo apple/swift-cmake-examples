@@ -22,6 +22,8 @@ function(_swift_generate_cxx_header_target target module header)
 
   if(APPLE)
     set(SDK_FLAGS "-sdk" "${CMAKE_OSX_SYSROOT}")
+  elseif(WIN32)
+    set(SDK_FLAGS "-sdk" "$ENV{SDKROOT}")
   endif()
 
   add_custom_command(
