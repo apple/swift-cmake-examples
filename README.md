@@ -46,3 +46,14 @@ Requires:
  - CMake 3.26
  - Swift 5.9
  - Clang 11 or Apple Clang in Xcode 12 or newer
+
+## Swift Macros
+
+Directory: `4_swift_macros`
+
+This project demonstrates how to build a custom macro in a CMake-based project
+using the Swift macro support introduced in Swift 5.9.
+
+Requires:
+
+ - Swift 5.9 (macOS: Swift 5.9.0, Windows and Linux: Swift 5.9.1)
