@@ -5,7 +5,7 @@
 #
 # See https://swift.org/LICENSE.txt for license information
 
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.22...3.29)
 
 project(hello LANGUAGES Swift)
 
