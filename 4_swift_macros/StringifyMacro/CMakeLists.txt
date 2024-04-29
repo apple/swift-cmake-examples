@@ -5,10 +5,7 @@
 #
 # See https://swift.org/LICENSE.txt for license information
 
-cmake_minimum_required(VERSION 3.22)
-if(POLICY CMP0157)
-  cmake_policy(SET CMP0157 NEW)
-endif()
+cmake_minimum_required(VERSION 3.22...3.29)
 
 project(StringifyMacro
   LANGUAGES Swift)
