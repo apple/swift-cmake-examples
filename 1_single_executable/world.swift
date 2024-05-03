@@ -11,6 +11,6 @@
 
 func world() -> String
 {
-  return "world" 
+  return "world"
 }
 
