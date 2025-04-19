@@ -34,11 +34,11 @@ function(_swift_generate_cxx_header target header)
     list(TRANSFORM ARG_SEARCH_PATHS PREPEND "-I")
   endif()
 
-  if(APPLE)
+  if(APPLE AND CMAKE_OSX_SYSROOT)
     set(SDK_FLAGS "-sdk" "${CMAKE_OSX_SYSROOT}")
   elseif(WIN32)
     set(SDK_FLAGS "-sdk" "$ENV{SDKROOT}")
-  elseif(DEFINED ${CMAKE_SYSROOT})
+  elseif(CMAKE_SYSROOT)
     set(SDK_FLAGS "-sdk" "${CMAKE_SYSROOT}")
   endif()
 
@@ -54,7 +54,7 @@ function(_swift_generate_cxx_header target header)
     DEPENDS ${_SwiftSources}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND
-      ${CMAKE_Swift_COMPILER} -frontend -typecheck
+      ${CMAKE_Swift_COMPILER} -typecheck
       ${ARG_SEARCH_PATHS}
       ${_SwiftSources}
       ${SDK_FLAGS}
