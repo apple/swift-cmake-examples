@@ -57,3 +57,22 @@ using the Swift macro support introduced in Swift 5.9.
 Requires:
 
  - Swift 5.9 (macOS: Swift 5.9.0, Windows and Linux: Swift 5.9.1)
+
+# Testing
+
+Tests are run with `ctest`, configured with the CMakeLists at the top-level.
+
+```sh
+cmake -G Ninja -B build -S .
+cd build
+ctest -j --output-on-failure
+```
+
+When you add a test, add it to the top-level CMakeLists file and re-run CMake
+from the test directory to ensure that the CTest files are updated
+appropriately before trying to run the tests.
+
+```sh
+cmake .
+ctest -j --output-on-failure
+```
