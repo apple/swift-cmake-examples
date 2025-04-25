@@ -1,0 +1,43 @@
+name: Pull Request
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  smoke_test:
+    name: Smoke Test
+    runs-on: ubuntu-latest
+    container: swift:6.1-bookworm
+    strategy:
+      matrix:
+        cmake:
+          - url: "https://github.com/Kitware/CMake/releases/download/v3.22.6/cmake-3.22.6-linux-x86_64.tar.gz"
+            hash: 09e1b34026c406c5bf4d1b053eadb3a8519cb360e37547ebf4b70ab766d94fbc
+          - url: "https://github.com/Kitware/CMake/releases/download/v3.26.6/cmake-3.26.6-linux-x86_64.tar.gz"
+            hash: 2dd48ccd3e3d872ee4cc916f3f4e24812612421007e895f82bf9fc7e49831d62
+          - url: "https://github.com/Kitware/CMake/releases/download/v3.30.8/cmake-3.30.8-linux-x86_64.tar.gz"
+            hash: adc81f2944e6f86b44e86acea3abea1651ed7890206933484b8b74ac1280314f
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+        with:
+          path: ./swift-cmake-examples
+      - name: Install Dependencies
+        shell: bash
+        run: apt update && apt install -y curl ninja-build
+      - name: Setup CMake
+        id: install-cmake
+        uses: ./swift-cmake-examples/.github/actions/cmake-action
+        with:
+          url: ${{ matrix.cmake.url }}
+          hash: ${{ matrix.cmake.hash }}
+      - name: Run Tests
+        shell: bash
+        run: |
+          "${{ steps.install-cmake.outputs.cmake }}" -G Ninja -B test -S swift-cmake-examples -DCMAKE_BUILD_TYPE=Release
+          "${{ steps.install-cmake.outputs.ctest }}" --output-on-failure --test-timeout 150 --test-dir test -j
