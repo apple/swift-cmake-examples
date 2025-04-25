@@ -1,0 +1,37 @@
+name: 'Install CMake'
+description: 'Download and configure CMake'
+inputs:
+  url:
+    description: "URL of CMake bundle to download"
+  hash:
+    description: "Expected bundle hash"
+  install_dir:
+    description: "Location where to install the CMake bundle"
+    default: /tmp/cmake
+
+outputs:
+  cmake:
+    description: "Path to the installed CMake executable."
+    value: ${{ steps.unpack-cmake.outputs.cmake-path }}
+  ctest:
+    description: "Path to the installed CMake ctest executable."
+    value: ${{ steps.unpack-cmake.outputs.ctest-path }}
+runs:
+  using: "composite"
+  steps:
+    - name: Download CMake
+      shell: bash
+      run: |
+        curl -Llo /tmp/cmake.tar.gz "${{ inputs.url }}"
+    - name: Verify CMake
+      shell: bash
+      run:
+        echo "${{ inputs.hash }}  /tmp/cmake.tar.gz" | shasum -a 256 -c-
+    - name: Unpack CMake
+      shell: bash
+      id: unpack-cmake
+      run: |
+        mkdir "${{ inputs.install_dir }}"
+        tar xf /tmp/cmake.tar.gz --strip-components=1 -C "${{ inputs.install_dir }}"
+        echo "cmake-path=${{ inputs.install_dir }}/bin/cmake" >> "$GITHUB_OUTPUT"
+        echo "ctest-path=${{ inputs.install_dir }}/bin/ctest" >> "$GITHUB_OUTPUT"
