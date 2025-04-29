@@ -10,17 +10,20 @@ on:
 
 jobs:
   smoke_test:
-    name: Smoke Test
+    name: Smoke Test ( CMake ${{ matrix.cmake.version }} )
     runs-on: ubuntu-latest
     container: swift:6.1-bookworm
     strategy:
       matrix:
         cmake:
-          - url: "https://github.com/Kitware/CMake/releases/download/v3.22.6/cmake-3.22.6-linux-x86_64.tar.gz"
+          - version: v3.22.6
+            url: "https://github.com/Kitware/CMake/releases/download/v3.22.6/cmake-3.22.6-linux-x86_64.tar.gz"
             hash: 09e1b34026c406c5bf4d1b053eadb3a8519cb360e37547ebf4b70ab766d94fbc
-          - url: "https://github.com/Kitware/CMake/releases/download/v3.26.6/cmake-3.26.6-linux-x86_64.tar.gz"
+          - version: v3.26.6
+            url: "https://github.com/Kitware/CMake/releases/download/v3.26.6/cmake-3.26.6-linux-x86_64.tar.gz"
             hash: 2dd48ccd3e3d872ee4cc916f3f4e24812612421007e895f82bf9fc7e49831d62
-          - url: "https://github.com/Kitware/CMake/releases/download/v3.30.8/cmake-3.30.8-linux-x86_64.tar.gz"
+          - version: v3.30.8
+            url: "https://github.com/Kitware/CMake/releases/download/v3.30.8/cmake-3.30.8-linux-x86_64.tar.gz"
             hash: adc81f2944e6f86b44e86acea3abea1651ed7890206933484b8b74ac1280314f
     steps:
       - name: Clone Repo
