@@ -22,6 +22,8 @@ jobs:
             hash: 2dd48ccd3e3d872ee4cc916f3f4e24812612421007e895f82bf9fc7e49831d62
           - version: 3.30.8
             hash: adc81f2944e6f86b44e86acea3abea1651ed7890206933484b8b74ac1280314f
+          - version: 4.0.1
+            hash: d66c11c010588c8256ee20a26b45977cd5b2f4aee2b742d4b8a353769940d147
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
