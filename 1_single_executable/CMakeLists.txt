@@ -9,4 +9,4 @@ cmake_minimum_required(VERSION 3.22...3.29)
 
 project(hello LANGUAGES Swift)
 
-add_executable(hello hello.swift)
+add_executable(hello main.swift world.swift)
